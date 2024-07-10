@@ -5,10 +5,10 @@ def train():
     from datasets import Dataset
 
     # Load model and tokenizer
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # Check available device
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
     model_name = "Qwen/Qwen2-1.5B"
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True).to(device)  # Move model to device
+    model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True).to(device) 
 
     tokenizer.pad_token = tokenizer.eos_token 
 
@@ -51,11 +51,11 @@ def train():
     # Set up training arguments
     training_args = TrainingArguments(
         output_dir="./shakespeare_model",
-        num_train_epochs=100,  # Increase the number of epochs
-        per_device_train_batch_size=1,  # Adjust the batch size
-        save_steps=500,  # Save the model more frequently
+        num_train_epochs=100,
+        per_device_train_batch_size=1,
+        save_steps=500, 
         save_total_limit=3,
-        learning_rate=1e-3,  # Adjust the learning rate
+        learning_rate=1e-3, 
         logging_dir='./logs',
         logging_steps=10,
     )
@@ -93,15 +93,11 @@ def eval():
     from transformers import AutoModelForCausalLM, AutoTokenizer
     import torch
 
-    # Assuming you're using a model that can be loaded with AutoModelForCausalLM
-    # and AutoTokenizer for simplicity
+    # Load model
     model_path = "./shakespeare_model"
-
-    # Load the fine-tuned model and tokenizer
     model = AutoModelForCausalLM.from_pretrained(model_path, local_files_only=True)
     tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
 
-    # Ensure the model is in evaluation mode
     model.eval()
 
     # Assuming you're using a device like 'cuda' or 'cpu'
@@ -109,7 +105,7 @@ def eval():
     model.to(device)
 
     # Prepare the input text
-    input_text = "I doth die"
+    input_text = "To be or not to be,"
     input_ids = tokenizer.encode(input_text, return_tensors="pt").to(device)
 
     # Generate text
